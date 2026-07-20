@@ -1,5 +1,4 @@
-DrawPostOfficeBundle
-====================
+# DrawPostOfficeBundle
 
 **Be since the Symfony/Mailer is not completed yet some behavior may be affected in later release, consider this
 bundle as experimental too**
@@ -10,7 +9,7 @@ It also allows configuration for a default **from**.
 
 ## Configuration
 
-```
+```yaml
 draw_post_office:
   default_from: 'support@example.com'
 ```
@@ -20,7 +19,7 @@ extend from the **Symfony\Component\Mime\Email** and create a **writer** for it.
 
 Any service that implement the **Draw\Component\Mailer\EmailWriter\EmailWriterInterface**
 will be registered as a writer. The **getForEmails** must return a map of method with priority as the value
-to register method as a writer (if you return the method as the value it will consider is priority to be 0). 
+to register method as a writer (if you return the method as the value it will consider is priority to be 0).
 The system will detect if the email match the class of the first argument of the method and call it if needed.
 
 The Post Office declare a listener for **Symfony\Component\Mailer\Event\MessageEvent** to hook it to the
@@ -126,7 +125,7 @@ class ForgotPasswordController
 }
 ```
 
-That way you keep your controller clean and structure how email should be written and overridden. 
+That way you keep your controller clean and structure how email should be written and overridden.
 
 The system also pass the **Envelope** parameter as the second argument in case you need it.
 
