@@ -48,7 +48,7 @@ class EmailComposer
                 }
             }
         } finally {
-            if ($currentLocale) {
+            if (null !== $currentLocale) {
                 $this->translator?->setLocale($currentLocale);
             }
         }

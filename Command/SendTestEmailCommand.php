@@ -30,10 +30,10 @@ class SendTestEmailCommand extends Command
         $this->mailer->send(
             (new Email())
                 ->subject('Test')
-                ->text('This email as been sent as part of a test.')
+                ->text('This email has been sent as part of a test.')
                 ->to($input->getArgument('to'))
         );
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

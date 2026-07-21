@@ -16,6 +16,7 @@ use Draw\Component\Mailer\EventListener\EmailSubjectFromHtmlTitleListener;
 use Pelago\Emogrifier\CssInliner;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
@@ -49,7 +50,9 @@ class MailerIntegration implements IntegrationInterface, ContainerBuilderIntegra
             ->getDefinition(LocalizeBodyRenderer::class)
             ->setDecoratedService(
                 'twig.mime_body_renderer',
-                'draw.mailer.body_renderer.localize_body_renderer.inner'
+                'draw.mailer.body_renderer.localize_body_renderer.inner',
+                0,
+                ContainerInterface::IGNORE_ON_INVALID_REFERENCE
             )
             ->setArgument('$bodyRenderer', new Reference('draw.mailer.body_renderer.localize_body_renderer.inner'))
         ;

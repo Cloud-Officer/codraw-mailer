@@ -57,7 +57,7 @@ class SendTestEmailCommandTest extends TestCase
                 static::callback(
                     function (Email $email) use ($to) {
                         $this->assertSame('Test', $email->getSubject());
-                        $this->assertSame('This email as been sent as part of a test.', $email->getTextBody());
+                        $this->assertSame('This email has been sent as part of a test.', $email->getTextBody());
                         $this->assertSame($to, $email->getTo()[0]->getAddress());
 
                         return true;

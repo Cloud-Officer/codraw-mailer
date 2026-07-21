@@ -32,7 +32,7 @@ class LocalizeBodyRenderer implements BodyRendererInterface
         try {
             $this->bodyRenderer->render($message);
         } finally {
-            if ($currentLocale) {
+            if (null !== $currentLocale) {
                 $this->translator?->setLocale($currentLocale);
             }
         }

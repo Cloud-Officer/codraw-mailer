@@ -1,6 +1,6 @@
 {
     "name": "codraw/mailer",
-    "description": "",
+    "description": "Write and send email via email writer services, with localization and css inlining, on top of symfony/mailer",
     "license": "MIT",
     "type": "library",
     "keywords": [
@@ -9,12 +9,15 @@
         "symfony"
     ],
     "require": {
-        "php": ">=8.5",
+        "php": "^8.5",
         "codraw/core": "^0.39",
+        "psr/container": "^1.1 || ^2.0",
         "symfony/dom-crawler": "^6.4.0",
         "symfony/css-selector": "^6.4.0",
         "symfony/console": "^6.4.0",
+        "symfony/event-dispatcher": "^6.4.0",
         "symfony/mailer": "^6.4.0",
+        "symfony/mime": "^6.4.0",
         "symfony/translation": "^6.4.0",
         "symfony/twig-bridge": "^6.4.0",
         "twig/twig": "^3.3"
@@ -24,6 +27,10 @@
         "codraw/tester": "^0.39",
         "pelago/emogrifier": "^8.0",
         "phpunit/phpunit": "^11.3 || ^12.0"
+    },
+    "suggest": {
+        "codraw/framework-extra-bundle": "To integrate the mailer in a Symfony application",
+        "pelago/emogrifier": "To use the css_inliner feature"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

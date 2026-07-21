@@ -26,16 +26,30 @@ class EmailWriterCompilerPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds(EmailWriterInterface::class) as $id => $tags) {
             $writers[$id] = new Reference($id);
             $definition = $container->getDefinition($id);
-            $forEmails = ReflectionAccessor::callMethod($class = $definition->getClass(), 'getForEmails');
+            $class = $container->getParameterBag()->resolveValue($definition->getClass()) ?: $id;
+
+            if (!method_exists($class, 'getForEmails')) {
+                throw new \RuntimeException(\sprintf('The class "%s" of the service "%s" tagged "%s" must implement a "getForEmails" method.', $class, $id, EmailWriterInterface::class));
+            }
+
+            $forEmails = ReflectionAccessor::callMethod($class, 'getForEmails');
             foreach ($forEmails as $methodName => $priority) {
                 if (\is_int($methodName)) {
                     $methodName = $priority;
                     $priority = 0;
                 }
 
-                $emailTypes = ReflectionExtractor::getClasses(
-                    (new \ReflectionMethod($class, $methodName))->getParameters()[0]->getType()
-                );
+                if (!method_exists($class, $methodName)) {
+                    throw new \RuntimeException(\sprintf('The method "%s::%s()" returned by "%s::getForEmails()" for the service "%s" does not exist.', $class, $methodName, $class, $id));
+                }
+
+                $parameters = (new \ReflectionMethod($class, $methodName))->getParameters();
+
+                if (!isset($parameters[0])) {
+                    throw new \RuntimeException(\sprintf('The method "%s::%s()" used as an email writer by the service "%s" must have at least one parameter.', $class, $methodName, $id));
+                }
+
+                $emailTypes = ReflectionExtractor::getClasses($parameters[0]->getType());
 
                 foreach ($emailTypes as $emailType) {
                     $emailWriterListenerDefinition

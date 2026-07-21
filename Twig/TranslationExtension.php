@@ -27,11 +27,11 @@ class TranslationExtension extends AbstractExtension
             $messages = [$messages];
         }
 
-        if (null !== $count) {
+        if (null !== $count && \is_array($arguments)) {
             $arguments['%count%'] = $count;
         }
 
-        $result = reset($messages);
+        $result = null;
         foreach ($messages as $message) {
             if ($message instanceof TranslatableInterface) {
                 if ($message instanceof TranslatableMessage && '' === $message->getMessage()) {
@@ -40,7 +40,7 @@ class TranslationExtension extends AbstractExtension
 
                 $result = $message->trans($this->translator, $locale ?? (\is_string($arguments) ? $arguments : null));
 
-                if ($result != $message) {
+                if (!$message instanceof \Stringable || $result !== (string) $message) {
                     return $result;
                 }
 

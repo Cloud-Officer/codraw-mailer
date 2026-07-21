@@ -37,7 +37,7 @@ class EmailSubjectFromHtmlTitleListener implements EventSubscriberInterface
             return;
         }
 
-        if (empty($subject = $crawler->text())) {
+        if ('' === ($subject = $crawler->text())) {
             return;
         }
 
